@@ -1,6 +1,6 @@
-# tsoro_yematatu_python
+# tsoro_yematatu_python_rmi
 
-Jogo tsoro yematatu utilizando conexão p2p.
+Jogo tsoro yematatu utilizando conexão rmi com `SimpleXMLRPCServer`.
 
 ## Dependências
 
