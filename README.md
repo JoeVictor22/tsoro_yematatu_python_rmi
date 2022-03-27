@@ -15,3 +15,7 @@ Para executar o jogo basta executar o arquivo principal duas vezes. O primeiro p
 ```shell
 python main.py
 ```
+
+
+## RMI
+python -m Pyro4.naming
