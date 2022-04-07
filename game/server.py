@@ -178,9 +178,15 @@ class Servidor(object):
 
 
 def start_server():
-    Pyro4.Daemon.serveSimple({
-        Servidor: 'TsoroYematatu',
-    }, host="0.0.0.0", port=9090, ns=False, verbose=True)
+    Pyro4.Daemon.serveSimple(
+        {
+            Servidor: "TsoroYematatu",
+        },
+        host="0.0.0.0",
+        port=9090,
+        ns=False,
+        verbose=True,
+    )
     print(f"Ready to listen")
 
 

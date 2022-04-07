@@ -22,6 +22,8 @@ orange = (255, 165, 0)
 brown = (139, 69, 19)
 pink = (255, 20, 147)
 
+PYRO_URL = "PYRO:TsoroYematatu@localhost:9090"
+
 CORES_MATRIX = [[red, green, blue], [yellow, cyan, magenta], [orange, brown, pink]]
 CORES_MATRIX_NAME = [
     ["Vermelho", "Verde", "Azul"],
@@ -39,7 +41,7 @@ MAX_CHAR_MSG = 50
 
 import Pyro4
 
-SERVER = Pyro4.core.Proxy('PYRO:TsoroYematatu@localhost:9090')
+SERVER = Pyro4.core.Proxy(PYRO_URL)
 
 # Inicia PyGame
 pg.init()
@@ -535,7 +537,7 @@ def start_game():
     time.sleep(1)
     add_to_player_buffer("Fim de jogo")
     draw_game()
-    time.sleep(5)
+    time.sleep(3)
     quit()
 
 

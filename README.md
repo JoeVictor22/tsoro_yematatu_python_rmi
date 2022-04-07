@@ -9,11 +9,6 @@ pip install -r requirements.txt
 ```
 
 ## Como executar o jogo com RMI/RPC
-### Criar nameserver
-python -m Pyro4.naming
 
-### Criar servidor
-python game/server.py
+Basta executar a `main.py` 3 vezes, a primeira irá ser criado o servidor, as outras 2 será inciado clientes. 
 
-### Criar 2 clientes
-python game/cliente.py
