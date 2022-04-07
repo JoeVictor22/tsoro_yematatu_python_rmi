@@ -173,17 +173,15 @@ class Servidor(object):
         if deny:
             return False
 
-        print(f"[socket] JOGADOR : enviado : {message}")
+        print(f"[evento transmitido] JOGADOR : enviado : {message}")
         return True
 
 
 def start_server():
-    daemon = Pyro4.Daemon()
-    ns = Pyro4.locateNS()
-    uri = daemon.register(Servidor)
-    ns.register("mess.server", str(uri))
+    Pyro4.Daemon.serveSimple({
+        Servidor: 'TsoroYematatu',
+    }, host="0.0.0.0", port=9090, ns=False, verbose=True)
     print(f"Ready to listen")
-    daemon.requestLoop()
 
 
 if __name__ == "__main__":

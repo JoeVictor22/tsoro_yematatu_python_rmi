@@ -39,7 +39,7 @@ MAX_CHAR_MSG = 50
 
 import Pyro4
 
-SERVER = Pyro4.Proxy(f"PYRONAME:mess.server")
+SERVER = Pyro4.core.Proxy('PYRO:TsoroYematatu@localhost:9090')
 
 # Inicia PyGame
 pg.init()
