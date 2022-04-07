@@ -289,14 +289,9 @@ def draw_chat():
 def check_game_ended():
     vitorias = [[0, 1, 4], [0, 2, 5], [0, 3, 6], [1, 2, 3], [4, 5, 6]]
 
-    # from client.server import ESTADO_JOGO, EU_DESISTO, ADVERSARIO_DESISTE
     estado_jogo = SERVER.get_game_state()
-    quem_deve_jogar = SERVER.get_game_turn()
-    eu_desisto = SERVER.get_game_tie()
-    adversario_desiste = SERVER.get_game_tie()
 
-    if eu_desisto and adversario_desiste:
-        # add_to_message_buffer("Empate")
+    if SERVER.get_game_tie():
         SERVER.add_to_message_buffer("empate")
         return True
 
@@ -324,7 +319,7 @@ def check_game_ended():
 
 
 def get_color():
-    global COR_JOGADOR, CORES_MATRIX_NAME
+    global COR_JOGADOR, COR_JOGADOR_NOME, CORES_MATRIX_NAME
     x, y = get_click()
     row, col = get_box_selected(x, y)
     global CORES_MATRIX

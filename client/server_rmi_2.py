@@ -63,7 +63,6 @@ class ControleJogo:
     DESISTENCIA = [False, False]
 
     def add_to_message_buffer(self, message, who=None):
-        # TODO: enviar a cor do jogador
 
         if message == "":
             return
@@ -71,7 +70,7 @@ class ControleJogo:
         cat = "[info]: "
 
         if who is not None:
-            cat = f"{who}: "
+            cat = f"[{who}]: "
 
         message = cat + message
         if len(self.MESSAGE_BUFFER) > 3:
@@ -88,7 +87,6 @@ class ControleJogo:
 
         self.JOGADORES[1] = cor
         return True
-
 
 
     def surrender(self, cor):
@@ -150,13 +148,8 @@ class Servidor(object):
     def get_message_buffer(self):
         return self.jogo.MESSAGE_BUFFER
 
-    def get_adversary(self, color=None):
-        # TODO retornar cor do adversario
-        return CORES_MATRIX[random.randint(0,2)][random.randint(0,2)]
-
-    def get_game_tie(self, color=None):
-        # TODO retornar estado_de_tie do adversario?
-        return False
+    def get_game_tie(self):
+        return self.jogo.DESISTENCIA[0] and self.jogo.DESISTENCIA[1]
 
     def get_game_state(self):
         return self.jogo.ESTADO_JOGO
@@ -196,18 +189,7 @@ class Servidor(object):
         if deny:
             return False
 
-        # message = json.dumps(message)
-        # print(f"[socket] {JOGADOR} : enviado : {message}")
         print(f"[socket] JOGADOR : enviado : {message}")
-
-        # message = encrypt_message(message)
-        # send_message_to_peer(message)
-        # should be a return?
-        from pprint import pprint
-        print("some message the peer should see")
-        pprint(message)
-        # self.jogo.add_to_message_buffer(message["message"], who=1)
-
         return True
 
 def encrypt_message(message: str, rsa_key=PUBLIC_KEY) -> bytes:
