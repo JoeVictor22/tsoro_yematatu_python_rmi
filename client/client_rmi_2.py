@@ -72,6 +72,7 @@ QUEM_DEVE_JOGAR = None
 INPUT_MESSAGE_BUFFER = ""
 INPUT_BUFFER = ""
 COR_JOGADOR_NOME = None
+PLAYER_MESSAGES = ""
 
 posicoes_selecoes = [
     [width / 2, height / 6],
@@ -136,7 +137,7 @@ def get_first_player():
             if send_first_to_play():
                 send_message("Eu quero jogar primeiro!")
             else:
-                SERVER.add_to_message_buffer("O outro jogador já pediu para jogar primeiro!")
+                add_to_player_buffer("O outro jogador já pediu para jogar primeiro!")
         else:
             send_message("Quero que você jogue primeiro!")
 
@@ -244,15 +245,21 @@ def draw_game():
 
     draw_chat()
 
+def add_to_player_buffer(message):
+    global PLAYER_MESSAGES
+    cat = "[info]: "
+
+    message = cat + message
+    PLAYER_MESSAGES = message
+
 
 def draw_chat():
     global INPUT_BUFFER
-    # from client.server import MESSAGE_BUFFER
     message_buffer = SERVER.get_message_buffer()
-    # buffer = MESSAGE_BUFFER.copy()
     buffer = message_buffer.copy()
 
     buffer.insert(0, INPUT_BUFFER)
+    buffer.append(PLAYER_MESSAGES)
     font_size = 20
     font = pg.font.Font(None, font_size)
 
@@ -268,12 +275,13 @@ def draw_chat():
             text_color = white
             if message == "":
                 iter_message = "Digite algo e envie pressionando ENTER!"
-
-        if message.startswith("[info]"):
-            text_color = cyan
-
-        if message.startswith("[enemy]"):
-            text_color = red
+        else:
+            if idx == len(buffer)-1:
+                text_color = black
+            elif message.startswith("[info]"):
+                text_color = cyan
+            elif not message.startswith(f"[{COR_JOGADOR_NOME}]"):
+                text_color = red
 
         text = font.render(str(iter_message), True, text_color)
         text.get_rect()
@@ -292,7 +300,8 @@ def check_game_ended():
     estado_jogo = SERVER.get_game_state()
 
     if SERVER.get_game_tie():
-        SERVER.add_to_message_buffer("empate")
+        add_to_player_buffer("Empate")
+        time.sleep(1)
         return True
 
     vencedor = None
@@ -308,11 +317,11 @@ def check_game_ended():
             break
     if vencedor == COR_JOGADOR:
         # add_to_message_buffer("Você venceu")
-        SERVER.add_to_message_buffer("Você venceu")
+        add_to_player_buffer("Você venceu")
         return True
     elif vencedor:
         # add_to_message_buffer("Você perdeu")
-        SERVER.add_to_message_buffer("Você perdeu")
+        add_to_player_buffer("Você perdeu")
         return True
 
     return False
@@ -328,14 +337,14 @@ def get_color():
 
         if not send_color():
             # add_to_message_buffer("Cor já selecionada...")
-            SERVER.add_to_message_buffer("Cor já selecionada...")
+            add_to_player_buffer("Cor já selecionada...")
             COR_JOGADOR = None
         else:
             nome_cor = CORES_MATRIX_NAME[row][col]
-            send_message(f"Escolhi a cor: {nome_cor}")
             COR_JOGADOR_NOME = nome_cor
+            send_message(f"Escolhi a cor: {nome_cor}")
             # add_to_message_buffer("Aguardando o outro jogador...")
-            SERVER.add_to_message_buffer("Aguardando o outro jogador...")
+            add_to_player_buffer("Aguardando o outro jogador...")
 
 
 def send_message_to_server(message: dict):
@@ -455,7 +464,6 @@ def get_second_click(index_jogada):
 
 def get_selected_play():
     row, col, index_jogada = get_circle_selected(*get_click())
-    # from client.server import ESTADO_JOGO
     estado_jogo = SERVER.get_game_state()
 
     if row:
@@ -476,9 +484,10 @@ def start_game():
     global CORES_MATRIX, COR_ADVERSARIO, COR_JOGADOR
     draw_color_picker()
 
-    SERVER.add_to_message_buffer("Selecione sua cor")
+    add_to_player_buffer("Selecione sua cor")
 
     while not SERVER.colors_picked():  # enqnt as cores nao foram selecionadas
+        draw_color_picker()
         draw_chat()
         for event in pg.event.get():
             if event.type == QUIT:
@@ -491,8 +500,7 @@ def start_game():
         pg.display.update()
         CLOCK.tick(FPS)
 
-    SERVER.add_to_message_buffer("Quem joga primeiro?")
-    # add_to_message_buffer("Quem joga primeiro?")
+    add_to_player_buffer("Quem joga primeiro?")
     cores_selecionadas = SERVER.get_colors()
     screen.fill(white)
     pg.draw.circle(screen, cores_selecionadas[0], (width / 6, height / 2), SIZE_CIRCLE_COLOR)
@@ -514,12 +522,10 @@ def start_game():
         pg.display.update()
         CLOCK.tick(FPS)
 
-    SERVER.add_to_message_buffer("Jogo iniciado!")
-    # add_to_message_buffer("Jogo iniciado!")
+    add_to_player_buffer("Jogo iniciado!")
 
     while not check_game_ended():
         draw_game()
-        # from client.server import QUEM_DEVE_JOGAR
         QUEM_DEVE_JOGAR = SERVER.get_game_turn()
 
         for event in pg.event.get():
@@ -538,8 +544,7 @@ def start_game():
 
     draw_game()
     time.sleep(1)
-    SERVER.add_to_message_buffer("Fim de jogo")
-    # add_to_message_buffer("Fim de jogo")
+    add_to_player_buffer("Fim de jogo")
     draw_game()
     time.sleep(5)
     quit()

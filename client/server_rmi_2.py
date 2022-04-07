@@ -58,7 +58,7 @@ class ControleJogo:
     JOGADOR = None
     QUEM_DEVE_JOGAR = None
     EU_DESISTO, ADVERSARIO_DESISTE = False, False
-    MESSAGE_BUFFER = [""]
+    MESSAGE_BUFFER = ["[info]: Iniciando jogo!", "", "", ""]
     JOGADORES = [None, None]
     DESISTENCIA = [False, False]
 
