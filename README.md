@@ -1,6 +1,6 @@
 # tsoro_yematatu_python_rmi
 
-Jogo tsoro yematatu utilizando conexão rmi com `SimpleXMLRPCServer`.
+Jogo tsoro yematatu utilizando conexão rmi com utilizando o Pyro4.
 
 ## Dependências
 
@@ -8,14 +8,12 @@ Jogo tsoro yematatu utilizando conexão rmi com `SimpleXMLRPCServer`.
 pip install -r requirements.txt
 ```
 
-## Execução
-
-Para executar o jogo basta executar o arquivo principal duas vezes. O primeiro peer é iniciado e fica a espera de uma conexão.
-
-```shell
-python main.py
-```
-
-
-## RMI
+## Como executar o jogo com RMI/RPC
+### Criar nameserver
 python -m Pyro4.naming
+
+### Criar servidor
+python game/server.py
+
+### Criar 2 clientes
+python game/cliente.py

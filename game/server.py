@@ -1,9 +1,4 @@
-import random
-import sys
-from datetime import datetime
-# TODO: use https://pyro5.readthedocs.io/en/latest/
 import Pyro4
-from rsa import PublicKey, PrivateKey
 
 width = 400
 height = 400
@@ -36,6 +31,7 @@ CHARSET = "abcdefghijklmnopqrstuvyxwz1234567890?!.,"
 FPS = 30
 
 MAX_CHAR_MSG = 50
+
 
 class ControleJogo:
     def __init__(self):
@@ -72,7 +68,6 @@ class ControleJogo:
 
         self.JOGADORES[1] = cor
         return True
-
 
     def surrender(self, cor):
         if cor == self.JOGADORES[0]:
@@ -123,7 +118,9 @@ class ControleJogo:
             return False
 
     def change_player_turn(self, cor):
-        self.QUEM_DEVE_JOGAR = self.JOGADORES[0] if cor == self.JOGADORES[1] else self.JOGADORES[1]
+        self.QUEM_DEVE_JOGAR = (
+            self.JOGADORES[0] if cor == self.JOGADORES[1] else self.JOGADORES[1]
+        )
 
 
 @Pyro4.expose
@@ -164,7 +161,9 @@ class Servidor(object):
         elif message["event"] == "JOGADA_1":
             deny = not self.jogo.do_play_1(message["index"], message["color"])
         elif message["event"] == "JOGADA_2":
-            deny = not self.jogo.do_play_2(message["index_1"], message["index_2"], message["color"])
+            deny = not self.jogo.do_play_2(
+                message["index_1"], message["index_2"], message["color"]
+            )
         elif message["event"] == "CHAT":
             message["message"] = message["message"][:MAX_CHAR_MSG]
             self.jogo.add_to_message_buffer(message["message"], who=message["color"])
@@ -176,6 +175,7 @@ class Servidor(object):
 
         print(f"[socket] JOGADOR : enviado : {message}")
         return True
+
 
 def start_server():
     daemon = Pyro4.Daemon()
