@@ -71,6 +71,7 @@ ESTADO_JOGO = [None for _ in range(7)]
 QUEM_DEVE_JOGAR = None
 INPUT_MESSAGE_BUFFER = ""
 INPUT_BUFFER = ""
+COR_JOGADOR_NOME = None
 
 posicoes_selecoes = [
     [width / 2, height / 6],
@@ -288,7 +289,7 @@ def draw_chat():
 def check_game_ended():
     vitorias = [[0, 1, 4], [0, 2, 5], [0, 3, 6], [1, 2, 3], [4, 5, 6]]
 
-    from client.server import ESTADO_JOGO, EU_DESISTO, ADVERSARIO_DESISTE
+    # from client.server import ESTADO_JOGO, EU_DESISTO, ADVERSARIO_DESISTE
     estado_jogo = SERVER.get_game_state()
     quem_deve_jogar = SERVER.get_game_turn()
     eu_desisto = SERVER.get_game_tie()
@@ -337,6 +338,7 @@ def get_color():
         else:
             nome_cor = CORES_MATRIX_NAME[row][col]
             send_message(f"Escolhi a cor: {nome_cor}")
+            COR_JOGADOR_NOME = nome_cor
             # add_to_message_buffer("Aguardando o outro jogador...")
             SERVER.add_to_message_buffer("Aguardando o outro jogador...")
 
@@ -375,7 +377,7 @@ def send_play_2(index_jogada_1, index_jogada_2):
 
 
 def send_message(message):
-    return send_message_to_server({"event": "CHAT", "message": message})
+    return send_message_to_server({"event": "CHAT", "message": message, "color": COR_JOGADOR_NOME})
 
 
 def get_box_selected(x, y):
@@ -480,7 +482,6 @@ def start_game():
     draw_color_picker()
 
     SERVER.add_to_message_buffer("Selecione sua cor")
-    # add_to_message_buffer("Selecione sua cor")
 
     while not SERVER.colors_picked():  # enqnt as cores nao foram selecionadas
         draw_chat()

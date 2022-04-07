@@ -60,18 +60,18 @@ class ControleJogo:
     EU_DESISTO, ADVERSARIO_DESISTE = False, False
     MESSAGE_BUFFER = [""]
     JOGADORES = [None, None]
+    DESISTENCIA = [False, False]
 
-    def add_to_message_buffer(self, message, who=0):
+    def add_to_message_buffer(self, message, who=None):
         # TODO: enviar a cor do jogador
 
         if message == "":
             return
 
         cat = "[info]: "
-        # if who == 1:
-        #     cat = "[you]: "
-        # elif who == 2:
-        #     cat = "[enemy]: "
+
+        if who is not None:
+            cat = f"{who}: "
 
         message = cat + message
         if len(self.MESSAGE_BUFFER) > 3:
@@ -92,10 +92,10 @@ class ControleJogo:
 
 
     def surrender(self, cor):
-        if cor == self.COR_JOGADOR:
-            self.EU_DESISTO = True
-        elif cor == self.COR_ADVERSARIO:
-            self.ADVERSARIO_DESISTE = True
+        if cor == self.JOGADORES[0]:
+            self.DESISTENCIA[0] = True
+        elif cor == self.JOGADORES[1]:
+            self.DESISTENCIA[1] = True
 
     def first_to_play(self, cor):
         if self.QUEM_DEVE_JOGAR is None:
@@ -140,7 +140,7 @@ class ControleJogo:
             return False
 
     def change_player_turn(self, cor):
-        self.QUEM_DEVE_JOGAR = self.COR_JOGADOR if cor == self.COR_ADVERSARIO else self.COR_ADVERSARIO
+        self.QUEM_DEVE_JOGAR = self.JOGADORES[0] if cor == self.JOGADORES[1] else self.JOGADORES[1]
 
 
 @Pyro4.expose
@@ -164,7 +164,7 @@ class Servidor(object):
     def get_game_turn(self):
         return self.jogo.QUEM_DEVE_JOGAR
 
-    def add_to_message_buffer(self, message, who=0):
+    def add_to_message_buffer(self, message, who=None):
         self.jogo.add_to_message_buffer(message, who)
 
     def colors_picked(self):
@@ -189,7 +189,7 @@ class Servidor(object):
             deny = not self.jogo.do_play_2(message["index_1"], message["index_2"], message["color"])
         elif message["event"] == "CHAT":
             message["message"] = message["message"][:MAX_CHAR_MSG]
-            self.jogo.add_to_message_buffer(message["message"], who=1)
+            self.jogo.add_to_message_buffer(message["message"], who=message["color"])
         elif message["event"] == "SURRENDER":
             self.jogo.surrender(message["color"])
 
