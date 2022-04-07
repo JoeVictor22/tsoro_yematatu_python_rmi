@@ -38,20 +38,6 @@ FPS = 30
 
 MAX_CHAR_MSG = 50
 
-DEFAULT_ENCODING = "utf-8"
-ENDERECO = "127.0.0.1"
-PORTA = 5051
-
-# import rsa
-# (PUBLIC_KEY, PRIVATE_KEY) = rsa.newkeys(2048)
-PUBLIC_KEY = PublicKey.load_pkcs1(
-    b"-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEApns5jkxWvqx0XxlhcrbtDHBVrgD3gRZEb28lq9laKKko3EDBLqR2\n0yNMMXz+IKBpO3uzDnvLMd99FmnS+e6loFDBqqK4cJvHvRYTfcON0JsSrsk4S01p\nFFZFImmVbl5HUXcoHkEuDiDTbFk+VfHYN+dZzRrQsyI0jxUNlA9KzPwf9FImU3nH\n/U59ZfMD9SCUdieNNQ27gB6Aff70oQhEi0VXFinaYXAmd96XUqckF4mWWVZdrP4s\nm2S5ZmZBkufGBmVFWkPr1X2KpZeJqRU+zeGQS/KWwPxLluRq8Y0KdFUAdO3fE0iJ\ncldmh/Qvf0ufeOmumLiYDbniiE9rVjT73QIDAQAB\n-----END RSA PUBLIC KEY-----\n"
-)
-PRIVATE_KEY = PrivateKey.load_pkcs1(
-    b"-----BEGIN RSA PRIVATE KEY-----\nMIIEqgIBAAKCAQEApns5jkxWvqx0XxlhcrbtDHBVrgD3gRZEb28lq9laKKko3EDB\nLqR20yNMMXz+IKBpO3uzDnvLMd99FmnS+e6loFDBqqK4cJvHvRYTfcON0JsSrsk4\nS01pFFZFImmVbl5HUXcoHkEuDiDTbFk+VfHYN+dZzRrQsyI0jxUNlA9KzPwf9FIm\nU3nH/U59ZfMD9SCUdieNNQ27gB6Aff70oQhEi0VXFinaYXAmd96XUqckF4mWWVZd\nrP4sm2S5ZmZBkufGBmVFWkPr1X2KpZeJqRU+zeGQS/KWwPxLluRq8Y0KdFUAdO3f\nE0iJcldmh/Qvf0ufeOmumLiYDbniiE9rVjT73QIDAQABAoIBAGwzNksXrmEqcE/G\njSEjZplpASagFjxdnojWMiOolgJLPvU3WNbZqSi8ji6zz+6gkwRH9y34oy181S2W\nBbrOsfKpydT/AOSfOofYKz7Xs/nab6ANw3qdiyfekfw1pxseRzfZO8e+ERK5nu+S\naQMutZpP0HuPbAigt/tHORi8wbLYSA7Ne8olawA8rrmYt7Vg1WdLH2Gwdo5BvDUF\nwqxjY/WHc1z99CH2PDvWQVtbI/GAKmp7+7eDw4RJeRO4GCaRA1cEz8RxoMXll9eP\n7VeFP84m0ZsNrSTe3ASKyjSmwdJlwnztaaSeBADGLTLrRL4PTWwL/C3WPVuFP4CY\nlbJyRgECgYkA3vN3MMJuQGGrGMs0TuBqyCofxr3p3Kk9QmMLDJuSUU/ihdVxBrIj\nXosXfqSPQcoVU00QhmxLxAgUdKn8C4YdZkmI6XoyLPAXEJYLR/rGxuC4/aNPPDVU\neqKW8+t/3gTbmjPcgcYPEUHeCZ7upkkrjVcVdoJznRw1WLNpUnPHijsZNQXUrn8r\nnQJ5AL8o2bC8lnYlWkEGQhMT1IUDTzbxWVE8NAcKtg6JVIAhEc0zdlEJ/a3W4tgG\nyHRZ1IowtY43lCrOnCLGw3WHb3u9faSyAh4Hd2Zawi9PB+re50/6u4AeUtZs/XQv\n6vAlJzV7vwqHNr+8RxPnGFwv6Nkmcums5hi9QQKBiQDB2CM4hMRBO+n8K6l2Lw8I\nq/9m1/Z+gbMehmiz9It6IR/Nxy93Z+jyqbKqzL81r1NtUuLcTUpuzaujZ6waBOiI\n58SfYzw+8BzNsfdrBPJRNlABTz10FtY1rinbOFW7nrOk1hSRzLeLBJ7d9I6Ai7vP\nLvkdSfzljAIh9hPLuZizagDXphMuCKnNAngdGqEaMXxO/JzjLYq90NUYc0qKOPC6\nV4osUEsrp2kAIQjOzzkCWZ0P7JmY/l9ip5Kef5AE2R1r7w0ClnSH3ljw5AbPHnMI\nE2bwZH0QKt4vukRJfwkxFmzSTMHCANGqQl3X3MFXXwLM6mN/+j1RO9IdzabNQQ+/\nUIECgYkAhGyWFHbTbRV3nz/x78w8z2dv7Rz8H7zZOxGgPVrM7OIRarsYjzNBRWRd\nTdXkVdwkW/d18Ap/F10ZjF39Kv+W3IEeVelR3Knjnv7X5/b02jYkQwAeaYZqdeZ0\nu/AQyDVkcDs0SJNNSqXeVZ5lRX2AhqsE9qUZvDu7NrN3DY8tzc9omV+HyOgtgA==\n-----END RSA PRIVATE KEY-----\n"
-)
-
-
 import Pyro4
 
 SERVER = Pyro4.Proxy(f"PYRONAME:mess.server")
@@ -259,7 +245,7 @@ def draw_chat():
     buffer = message_buffer.copy()
 
     buffer.insert(0, INPUT_BUFFER)
-    buffer.append(PLAYER_MESSAGES)
+    # buffer.append(PLAYER_MESSAGES)
     font_size = 20
     font = pg.font.Font(None, font_size)
 
@@ -276,9 +262,7 @@ def draw_chat():
             if message == "":
                 iter_message = "Digite algo e envie pressionando ENTER!"
         else:
-            if idx == len(buffer)-1:
-                text_color = black
-            elif message.startswith("[info]"):
+            if message.startswith("[info]"):
                 text_color = cyan
             elif not message.startswith(f"[{COR_JOGADOR_NOME}]"):
                 text_color = red
@@ -290,6 +274,11 @@ def draw_chat():
         )
         added_height += font_size
         screen.blit(text, text_rect)
+
+    text = font.render(str(PLAYER_MESSAGES), True, black)
+    text.get_rect()
+    text_rect = text.get_rect(left=padding, top=(386.0))
+    screen.blit(text, text_rect)
 
     pg.display.update()
 
@@ -316,11 +305,9 @@ def check_game_ended():
             vencedor = estado_jogo[vitoria[0]]
             break
     if vencedor == COR_JOGADOR:
-        # add_to_message_buffer("Você venceu")
         add_to_player_buffer("Você venceu")
         return True
     elif vencedor:
-        # add_to_message_buffer("Você perdeu")
         add_to_player_buffer("Você perdeu")
         return True
 
@@ -557,4 +544,5 @@ if __name__ == "__main__":
     try:
         start_game()
     except (KeyboardInterrupt, EOFError):
+        quit()
         print("Goodbye! (:")
