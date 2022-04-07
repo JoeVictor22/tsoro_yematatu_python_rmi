@@ -1,6 +1,6 @@
 # tsoro_yematatu_python_rmi
 
-Jogo tsoro yematatu utilizando conexão rmi com utilizando o Pyro4.
+Jogo tsoro yematatu utilizando conexão rmi com a biblioteca Pyro4.
 
 ## Dependências
 
